@@ -1,5 +1,6 @@
 // create routes to json file
 
+// create hadlers for icons/buttons 
 
 let noteTitle;
 let noteText;
