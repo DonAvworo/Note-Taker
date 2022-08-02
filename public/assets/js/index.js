@@ -15,28 +15,35 @@ if (window.location.pathname === '/notes') {
   noteList = document.querySelectorAll('.list-container .list-group');
 }
 
-// Show an element
-const show = (elem) => {
-  elem.style.display = 'inline';
+// this is a function that shows an element (can use the visibility = 'visible'  or  display = 'block' )
+// Show an element 
+const show = (elem) => { 
+  elem.style.display = 'inline'; 
 };
 
+// this function will show the elemennt (can use the visibility = 'hidden')
 // Hide an element
 const hide = (elem) => {
   elem.style.display = 'none';
 };
 
-// activeNote is used to keep track of the note in the textarea
+/* activeNote is used to keep track of the note in the textarea so that it can
+be rendered in the textarea when the user clicks a note in the list*/
 let activeNote = {};
 
-const getNotes = () =>
-  fetch('/api/notes', {
+// get the notes from the db using the api fetch call 
+const getNotes = () => 
+  fetch('/api/notes', { 
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   });
 
-const saveNote = (note) =>
+/*save the (user input) note to the db by sending a POST request to the 
+api endpoint by converting the note to a json string (using JSON.stringify) 
+a method of converting a JavaScript object to a JSON string*/ 
+const saveNote = (note) => //TODO: SEE DUMP 1 in dump-notes.js
   fetch('/api/notes', {
     method: 'POST',
     headers: {
@@ -45,6 +52,7 @@ const saveNote = (note) =>
     body: JSON.stringify(note),
   });
 
+// delete the existing notes stored in api endpoint using the DELETE method 
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: 'DELETE',
@@ -53,15 +61,20 @@ const deleteNote = (id) =>
     },
   });
 
-const renderActiveNote = () => {
+// this will render the active notes to the textarea using the activeNote object 
+const renderActiveNote = () => { 
   hide(saveNoteBtn);
-
+  
+  // if the activeNote object is empty, then the user can enter a new note
   if (activeNote.id) {
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
-  } else {
+  } 
+  
+  // if the activeNote object is not empty, then the user can edit the note 
+  else { 
     noteTitle.removeAttribute('readonly');
     noteText.removeAttribute('readonly');
     noteTitle.value = '';
@@ -69,7 +82,8 @@ const renderActiveNote = () => {
   }
 };
 
-const handleNoteSave = () => {
+// if the user clicks the save button, then the note will be saved to the db
+const handleNoteSave = () => { 
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
@@ -111,6 +125,8 @@ const handleNewNoteView = (e) => {
   renderActiveNote();
 };
 
+// if the user clicks the save button, then the note will be saved to the db 
+// requires the handleNoteSave function to be called using the event listener (onclick = handleNoteSave (DOM event)) 
 const handleRenderSaveBtn = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
     hide(saveNoteBtn);
