@@ -120,17 +120,40 @@ const handleNoteDelete = (e) => {
   });
 };
 
+// Edit the clicked note
+const handleNoteEdit = (event) => {
+  // prevents the click listener for the list from being called when the button inside of it is clicked
+  event.stopPropagation(); // stop the event from propagating to the parent element
+  handleNoteView(); // get the note that the user clicked on
+
+  const note = event.target; // get the note that the user clicked on
+  const noteId = JSON.parse(note.parentElement.getAttribute("data-note")).id;
+
+  if (activeNote.id === noteId) {     // if the user clicked on the note that is currently being edited, then the user can edit the note
+    activeNote = {                    // set the active note to the note that the user clicked on
+      title: noteTitle.value.trim(),  // set the active note title to the note title that the user entered
+      text: noteText.value.trim(),    // set the active note text to the note text that the user entered
+    };
+  }
+
+  editNote(noteId).then(() => { // edit the note in the db using the PUT method
+    saveNote(activeNote);       // save the note to the db using the POST method
+    getAndRenderNotes();        // get the notes from the db using the GET method
+    renderActiveNote();         // render the notes to the textarea
+  });
+};
+
 // Sets the activeNote and displays it
-const handleNoteView = (e) => {
-  e.preventDefault();
+const handleNoteView = (e) => { // get the note that the user clicked on
+  e.preventDefault();           // prevent the default behavior of the link
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
-  renderActiveNote();
+  renderActiveNote();           // render the note to the textarea
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
-const handleNewNoteView = (e) => {
-  activeNote = {};
-  renderActiveNote();
+const handleNewNoteView = (e) => { // get the note that the user clicked on
+  activeNote = {};            // set the active note to an empty object 
+  renderActiveNote();         // render the note to the textarea
 };
 
 // if the user clicks the save button, then the note will be saved to the db 
@@ -207,4 +230,4 @@ if (window.location.pathname === '/notes') {
   noteText.addEventListener('keyup', handleRenderSaveBtn);
 }
 
-getAndRenderNotes();
+getAndRenderNotes(); // render the notes 
