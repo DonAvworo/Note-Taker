@@ -1,12 +1,10 @@
-// create routes to json file
+// create routes to json file where the data is stored (db.json is the local database)
 
-// create hadlers for icons/buttons 
-
-let noteTitle = document.getElementById
-let noteText;
-let saveNoteBtn;
-let newNoteBtn;
-let noteList;
+let noteTitle = document.getElementById // get the note title element from the html file
+let noteText; // get the note text element from the html file
+let saveNoteBtn; // icon for the save button 
+let newNoteBtn; // get the new note button element from the html file
+let noteList; // get the note list element from the html file
 
 if (window.location.pathname === '/notes') {  // if the user is on the notes page
   noteTitle = document.querySelector('.note-title'); // get the note title
@@ -30,12 +28,12 @@ const hide = (elem) => {
 
 /* activeNote is used to keep track of the note in the textarea so that it can
 be rendered in the textarea when the user clicks a note in the list*/
-let activeNote = {};
+let activeNote = {}; // Renders the list of notes to the sidebar
 
 // get the notes from the db using the api fetch call 
 const getNotes = () => 
   fetch('/api/notes', { // fetch the notes from the api endpoint which is in the notes.js file
-    method: 'GET',
+    method: 'GET',      // GET method to get the notes from the db 
     headers: {
       'Content-Type': 'application/json',
     },
@@ -50,17 +48,26 @@ const saveNote = (note) => //TODO: SEE DUMP 1 in dump-notes.js
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(note),
+    body: JSON.stringify(note), // convert the note to a json string
   });
 
 // delete the existing notes stored in api endpoint using the DELETE method 
-const deleteNote = (id) =>
-  fetch(`/api/notes/${id}`, {
-    method: 'DELETE',
+const deleteNote = (id) =>  // delete the note from the db using the api endpoint which is in the notes.js file
+  fetch(`/api/notes/${id}`, { // fetch the notes from the api endpoint which is in the notes.js file
+    method: 'DELETE', 
     headers: {
       'Content-Type': 'application/json',
     },
   });
+
+  // enable edit to the note in the db using the PUT method
+const editNote = (id) =>
+fetch(`/api/notes/${id}`, { // fetch the notes from the api endpoint which is in the notes.js file  
+  method: "PUT",            // PUT method to edit the note in the db 
+  headers: {                // set the headers to application/json
+    "Content-Type": "application/json",
+  },
+});
 
 // this will render the active notes to the textarea using the activeNote object 
 const renderActiveNote = () => { 
@@ -68,18 +75,17 @@ const renderActiveNote = () => {
   
   // if the activeNote object is empty, then the user can enter a new note
   if (activeNote.id) {
-    noteTitle.setAttribute('readonly', true);
-    noteText.setAttribute('readonly', true);
+    // noteTitle.setAttribute('readonly', true); // user can not edit the note title if this is set to true
+    // noteText.setAttribute('readonly', true); // user is set to be able to edit so this line is taken out
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } 
-  
   // if the activeNote object is not empty, then the user can edit the note 
   else { 
-    noteTitle.removeAttribute('readonly');
-    noteText.removeAttribute('readonly');
-    noteTitle.value = '';
-    noteText.value = '';
+    // noteTitle.removeAttribute('readonly'); // read only not needed because the user can edit the note
+    // noteText.removeAttribute('readonly');  // same as above
+    noteTitle.value = '';                     // set the note title to an empty string so the user can enter a new note title
+    noteText.value = '';                      // set the note text to an empty string so the user can enter a new note
   }
 };
 
