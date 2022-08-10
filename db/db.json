@@ -1,3 +1,22 @@
 [
-   
+  {
+    "title": "Get Working",
+    "text": "start youre day with a great work",
+    "id": "4dfw2"
+  },
+  {
+    "title": "Dust yourself off",
+    "text": "take a break and dust yourself off then get back to work",
+    "id": "87sfn"
+  },
+  {
+    "title": "Practice",
+    "text": "practice your work. practice is the key to success",
+    "id": "iqt3b"
+  },
+  {
+    "title": "Get a good night's sleep",
+    "text": "get a good night's sleep. sleep is the key to success",
+    "id": "m8rfp"
+  }
 ]
