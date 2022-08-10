@@ -1,96 +1,72 @@
-// create routes to json file where the data is stored (db.json is the local database)
+let noteTitle;
+let noteText;
+let saveNoteBtn;
+let newNoteBtn;
+let noteList;
 
-let noteTitle = document.getElementById // get the note title element from the html file
-let noteText; // get the note text element from the html file
-let saveNoteBtn; // icon for the save button 
-let newNoteBtn; // get the new note button element from the html file
-let noteList; // get the note list element from the html file
-
-if (window.location.pathname === '/notes') {  // if the user is on the notes page
-  noteTitle = document.querySelector('.note-title'); // get the note title
-  noteText = document.querySelector('.note-textarea'); // get the note text
-  saveNoteBtn = document.querySelector('.save-note'); // get the save note button
-  newNoteBtn = document.querySelector('.new-note'); // get the new note button
-  noteList = document.querySelectorAll('.list-container .list-group'); // get the note list
+if (window.location.pathname === '/notes') {
+  noteTitle = document.querySelector('.note-title');
+  noteText = document.querySelector('.note-textarea');
+  saveNoteBtn = document.querySelector('.save-note');
+  newNoteBtn = document.querySelector('.new-note');
+  noteList = document.querySelectorAll('.list-container .list-group');
 }
 
-// this is a function that shows an element (can use the visibility = 'visible'  or  display = 'block' )
-// Show an element 
-const show = (elem) => {  //
-  elem.style.display = 'inline';  // show the element
-}; 
-
-// this function will show the elemennt (can use the visibility = 'hidden')
-// Hide an element
-const hide = (elem) => { 
-  elem.style.display = 'none'; // hide the element
+// Show an element
+const show = (elem) => {
+  elem.style.display = 'inline';
 };
 
-/* activeNote is used to keep track of the note in the textarea so that it can
-be rendered in the textarea when the user clicks a note in the list*/
-let activeNote = {}; // Renders the list of notes to the sidebar
+// Hide an element
+const hide = (elem) => {
+  elem.style.display = 'none';
+};
 
-// get the notes from the db using the api fetch call 
-const getNotes = () => 
-  fetch('/api/notes', { // fetch the notes from the api endpoint which is in the notes.js file
-    method: 'GET',      // GET method to get the notes from the db 
+// activeNote is used to keep track of the note in the textarea
+let activeNote = {};
+
+const getNotes = () =>
+  fetch('/api/notes', {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   });
 
-/*save the (user input) note to the db by sending a POST request to the 
-api endpoint by converting the note to a json string (using JSON.stringify) 
-a method of converting a JavaScript object to a JSON string*/ 
-const saveNote = (note) => //TODO: SEE DUMP 1 in dump-notes.js
+const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(note), // convert the note to a json string
+    body: JSON.stringify(note),
   });
 
-// delete the existing notes stored in api endpoint using the DELETE method 
-const deleteNote = (id) =>  // delete the note from the db using the api endpoint which is in the notes.js file
-  fetch(`/api/notes/${id}`, { // fetch the notes from the api endpoint which is in the notes.js file
-    method: 'DELETE', 
+const deleteNote = (id) =>
+  fetch(`/api/notes/${id}`, {
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },
   });
 
-  // enable edit to the note in the db using the PUT method
-const editNote = (id) =>
-fetch(`/api/notes/${id}`, { // fetch the notes from the api endpoint which is in the notes.js file  
-  method: "PUT",            // PUT method to edit the note in the db 
-  headers: {                // set the headers to application/json
-    "Content-Type": "application/json",
-  },
-});
-
-// this will render the active notes to the textarea using the activeNote object 
-const renderActiveNote = () => { 
+const renderActiveNote = () => {
   hide(saveNoteBtn);
-  
-  // if the activeNote object is empty, then the user can enter a new note
+
   if (activeNote.id) {
-    // noteTitle.setAttribute('readonly', true); // user can not edit the note title if this is set to true
-    // noteText.setAttribute('readonly', true); // user is set to be able to edit so this line is taken out
+    noteTitle.setAttribute('readonly', true);
+    noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
-  } 
-  // if the activeNote object is not empty, then the user can edit the note 
-  else { 
-    // noteTitle.removeAttribute('readonly'); // read only not needed because the user can edit the note
-    // noteText.removeAttribute('readonly');  // same as above
-    noteTitle.value = '';                     // set the note title to an empty string so the user can enter a new note title
-    noteText.value = '';                      // set the note text to an empty string so the user can enter a new note
+  } else {
+    noteTitle.removeAttribute('readonly');
+    noteText.removeAttribute('readonly');
+    noteTitle.value = '';
+    noteText.value = '';
   }
 };
 
-// if the user clicks the save button, then the note will be saved to the db
-const handleNoteSave = () => { 
+const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
@@ -104,8 +80,7 @@ const handleNoteSave = () => {
 // Delete the clicked note
 const handleNoteDelete = (e) => {
   // Prevents the click listener for the list from being called when the button inside of it is clicked
-  e.stopPropagation(); // stop the event from propagating to the parent element
-  handleNoteView(); // get the note that the user clicked on
+  e.stopPropagation();
 
   const note = e.target;
   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
@@ -120,44 +95,19 @@ const handleNoteDelete = (e) => {
   });
 };
 
-// Edit the clicked note
-const handleNoteEdit = (event) => {
-  // prevents the click listener for the list from being called when the button inside of it is clicked
-  event.stopPropagation(); // stop the event from propagating to the parent element
-  handleNoteView(); // get the note that the user clicked on
-
-  const note = event.target; // get the note that the user clicked on
-  const noteId = JSON.parse(note.parentElement.getAttribute("data-note")).id;
-
-  if (activeNote.id === noteId) {     // if the user clicked on the note that is currently being edited, then the user can edit the note
-    activeNote = {                    // set the active note to the note that the user clicked on
-      title: noteTitle.value.trim(),  // set the active note title to the note title that the user entered
-      text: noteText.value.trim(),    // set the active note text to the note text that the user entered
-    };
-  }
-
-  editNote(noteId).then(() => { // edit the note in the db using the PUT method
-    saveNote(activeNote);       // save the note to the db using the POST method
-    getAndRenderNotes();        // get the notes from the db using the GET method
-    renderActiveNote();         // render the notes to the textarea
-  });
-};
-
 // Sets the activeNote and displays it
-const handleNoteView = (e) => { // get the note that the user clicked on
-  e.preventDefault();           // prevent the default behavior of the link
+const handleNoteView = (e) => {
+  e.preventDefault();
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
-  renderActiveNote();           // render the note to the textarea
+  renderActiveNote();
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
-const handleNewNoteView = (e) => { // get the note that the user clicked on
-  activeNote = {};            // set the active note to an empty object 
-  renderActiveNote();         // render the note to the textarea
+const handleNewNoteView = (e) => {
+  activeNote = {};
+  renderActiveNote();
 };
 
-// if the user clicks the save button, then the note will be saved to the db 
-// requires the handleNoteSave function to be called using the event listener (onclick = handleNoteSave (DOM event)) 
 const handleRenderSaveBtn = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
     hide(saveNoteBtn);
@@ -230,4 +180,4 @@ if (window.location.pathname === '/notes') {
   noteText.addEventListener('keyup', handleRenderSaveBtn);
 }
 
-getAndRenderNotes(); // render the notes 
+getAndRenderNotes();
