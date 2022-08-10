@@ -9,8 +9,8 @@ app.use(express.json());  // use the express.json middleware to parse the body o
 
 app.use(express.static("public")); // use the express.static middleware to serve the public folder
 
-require("./routes/api.routes")(app); // require the api.routes.js file and pass it the app object
-require("./routes/html.routes")(app); // require the html.routes.js file and pass it the app object
+require("./routes/api.route")(app); // require the api.routes.js file and pass it the app object
+require("./routes/html.route")(app); // require the html.routes.js file and pass it the app object
 
 app.listen(PORT, () => { // listen on the port
   catchErrors(() => { // catch errors in the callback function and log them to the console
