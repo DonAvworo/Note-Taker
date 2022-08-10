@@ -61,7 +61,7 @@ module.exports = (app) => {
       let notesArr = JSON.parse(data);                    // parse the data and store it in a variable called notesArr
       let selectedNote = notesArr.find((note) => note.id === editId);
 
-      // check if found
+      // check if found note is undefined and if so, update the note with the id of the note to be updated
       if (selectedNote) {
         let updatedNote = {
           title: req.body.title,                           // set value of `title` get from req
