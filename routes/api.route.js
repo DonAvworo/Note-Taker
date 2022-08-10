@@ -1,6 +1,7 @@
-// file path for dependencies
+// file path for dependencie
 const fs = require("fs");                               // file system module
-const generateUniqueId = require("generateId");         // require the generateId module and store it in a variable called generateUniqueId
+/*const generateUniqueId = require("generateId"); */    // DID NOT WORK!!! require the generateId module and store it in a variable called generateUniqueId
+const generateUniqueId = require("uuid");               // require the uuid/v4 module and store it in a variable called generateUniqueId
 const editNote = (updatedNotesArray) => {
   fs.writeFile("./db/db.json", JSON.stringify(updatedNotesArray), (err) => { // Write the updated notes array to the db.json file.
     if (err) throw err;
