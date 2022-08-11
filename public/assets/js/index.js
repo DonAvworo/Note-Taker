@@ -4,20 +4,20 @@ let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-if (window.location.pathname === '/notes') {
-  noteTitle = document.querySelector('.note-title');
-  noteText = document.querySelector('.note-textarea');
-  saveNoteBtn = document.querySelector('.save-note');
-  newNoteBtn = document.querySelector('.new-note');
-  noteList = document.querySelectorAll('.list-container .list-group');
+if (window.location.pathname === '/notes') {         // If the page is the notes page render the notes list and active note
+  noteTitle = document.querySelector('.note-title'); // Get the note title input element
+  noteText = document.querySelector('.note-textarea'); // Get the note textarea element
+  saveNoteBtn = document.querySelector('.save-note'); // Get the save note button element
+  newNoteBtn = document.querySelector('.new-note'); // Get the new note button element
+  noteList = document.querySelectorAll('.list-container .list-group'); // Get the note list elements
 }
 
-// Show an element
-const show = (elem) => {
+
+const show = (elem) => { 
   elem.style.display = 'inline';
 };
 
-// Hide an element
+
 const hide = (elem) => {
   elem.style.display = 'none';
 };

@@ -1,5 +1,4 @@
 //generate a random id for the note object
-
 module.exports = () => {
 Math.floor((1 + Math.random()) * 0x10000) // generate a random number
 .toString(16) // convert it to a hexadecimal string 
