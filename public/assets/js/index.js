@@ -147,7 +147,7 @@ const renderNoteList = async (notes) => {
       liEl.append(delBtnEl);
     }
 
-    return liEl;
+    return liEl; 
   };
 
   if (jsonNotes.length === 0) {
