@@ -56,7 +56,7 @@ const deleteNote = (id) =>  // delete the note from the db using the api endpoin
   fetch(`/api/notes/${id}`, { // fetch the notes from the api endpoint which is in the notes.js file
     method: 'DELETE', 
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json', // set the headers to application/json 
     },
   });
 

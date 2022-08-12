@@ -10,12 +10,7 @@ app.use(express.static("public")); // use the express.static middleware to serve
 require("./routes/api.route")(app); // require the api.routes.js file and pass it the app object
 require("./routes/html.route")(app); // require the html.routes.js file and pass it the app object
 
-app.listen(PORT, () => {              // listen on the port
-}).on("error", err => {               // if there is an error});
-  console.log(err);                   // log the error to the console
-}).on("listening", () => {            // if there is no error});
-  console.log(`Server listening on port ${PORT}`); // log the port to the console
-}).on("close", () => {                // if there is no error});
-  console.log(`Server listening on port ${PORT}`); // log the port to the console
-});
+app.listen(PORT, () =>
+  console.log(`Express server currently running on port: ${PORT}`)
+);
 
